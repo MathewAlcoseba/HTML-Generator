@@ -1,42 +1,32 @@
 <?php
 
-class HtmlTagBuilder {
+class HTMLTagBuilder {
     private $tag;
     private $attributes = [];
-    private $content;
-    private $headers = [];
+    private $content = '';
 
-    public function create($tag) {
+    public function __construct($tag) {
         $this->tag = $tag;
-        return $this; // Return $this for method chaining
     }
 
-    public function attr($name, $value) {
+    public function withAttribute($name, $value) {
         $this->attributes[$name] = $value;
-        return $this; // Return $this for method chaining
+        return $this;
     }
 
-    public function content($content) {
-        $this->content = $content;
-        return $this; // Return $this for method chaining
-    }
-
-    public function header($name, $value){
+    public function withContent($content) {
         $this->content = $content;
         return $this;
-
     }
 
-    public function __toString() {
-        $html = "<{$this->tag}";
-
+    public function build() {
+        $html = "\n\t" . '<' . $this->tag;
         foreach ($this->attributes as $name => $value) {
-            $html .= " $name=\"$value\"";
+            $html .= ' ' . $name . '="' . $value . '"';
         }
-
-        $html .= ">{$this->content}</{$this->tag}>";
-
+        $html .= '>' . $this->content . '</' . $this->tag . '>';
         return $html;
     }
 }
+
 ?>
